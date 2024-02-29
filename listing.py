@@ -16,6 +16,9 @@ images = []
 
 for link in soup.find_all('a', {'data-background-image': True}):
     images.append(link["data-background-image"])
+
+# Get the image content
+    image_content = requests.get(images).content
         
 # Listing Address
 address = soup.find('a',class_='listing-address').get_text(strip=True)
@@ -46,26 +49,34 @@ if author:
         print(author_name)
 
 
+#creating a folder to save images and data
+        
+folder_name = "overlandng"
+os.makedirs(folder_name , exist_ok=True)
 
+txt_folder = os.path.join(folder_name, "Text-folder")
+img_folder = os.path.join(folder_name, "images-folder")
+os.makedirs(txt_folder , exist_ok=True)
+os.makedirs(img_folder, exist_ok=True)
 
-# Creating a File and saving the data in it
+# Creating a File and saving data in text-folder
 
-file = open("listing.txt", "w")
-file.writelines([f"Address: {address}\n"])
-file.writelines([f"Lat: {latitude}\n"])
-file.writelines([f"Long: {longitude}\n"])
-file.writelines([f"Description : {description}\n"])
-file.writelines([f"Authr-name : {author_name}\n"])
-file.writelines([f"Authr-link : {author_link}\n"])
-file.close()
+file_name = "listing.txt"
 
-# storing images in a folder
-folder_name = 'images'
-os.makedirs(folder_name, exist_ok=True)
+file_path = os.path.join(txt_folder, file_name)
 
-#download and save images
-for image_url in images:
-    image_content = requests.get(image_url).content
-    image_name = f'image.jpg'
-    with open(os.path.join(folder_name, image_name), 'wb') as f:
-        f.write(image_content)
+# Open the file for writing
+with open(file_path, "w") as file:
+
+    file.write(f"Address: {address}\n")
+    file.write(f"Lat: {latitude}\n")
+    file.write(f"Long: {longitude}\n")
+    file.write(f"Description : {description}\n")
+    file.write(f"Authr-name : {author_name}\n")
+    file.write(f"Authr-link : {author_link}\n")
+
+ # Save the image to the folder
+    
+image_filename = os.path.join(img_folder, 'image.jpg')
+with open(image_filename, 'wb') as f:
+    f.write(image_content)
