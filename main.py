@@ -3,10 +3,8 @@ import requests
 import os
 import re
 
-
-print("Enter link")
-provided_link = input("")
-
+# Get input from user for the link
+provided_link = input("Provide the listing url: ")
 
 url = requests.get(provided_link, headers={
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0',
