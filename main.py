@@ -3,6 +3,7 @@ import requests
 import os
 import re
 
+
 print("Enter link")
 provided_link = input("")
 
@@ -34,6 +35,17 @@ description = soup.find('div', id= "listing-overview").get_text()
 
 
 
+# formating the title to be used as folder name
+def convert_to_folder_name(title):
+    # Remove special characters and spaces
+    folder_name = re.sub(r"[^\w\s]", "", title)
+    # Replace spaces with underscores
+    folder_name = re.sub(r"\s+", "_", folder_name)
+    # Convert to lowercase
+    folder_name = folder_name.lower()
+    return folder_name
+
+
 # Author and link
 
 author_name = soup.find("div", class_="hosted-by-title").find("a").text.strip()
@@ -49,6 +61,7 @@ def convert_to_folder_name(title):
     # Convert to lowercase
     folder_name = folder_name.lower()
     return folder_name
+
 
 
 # making folder
@@ -92,6 +105,7 @@ for i, url in enumerate(images):
             print(f"Failed to download image {i+1}: {response.status_code}")
     except Exception as e:
         print(f"Error downloading image {i+1}: {e}")
+
 
 
 print("All images downloaded and saved successfully!")
